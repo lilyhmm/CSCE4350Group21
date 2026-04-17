@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
         menu();
+        shutdown();
 
     }
 
@@ -18,10 +19,10 @@ public class Main {
         do {
             System.out.println("\nSelect one of the following options: ");
             System.out.println("------------------------------------------");
-            System.out.println("1. View Sales");
-            System.out.println("2. View Inventory");
-            System.out.println("3. View Suppliers");
-            System.out.println("4. View Customers");
+            System.out.println("1. Administrator View");
+            System.out.println("2. Vehicle Locator View");
+            System.out.println("3. Customers View");
+            System.out.println("4. Marketing View");
             System.out.println("5. Exit");
             System.out.println("------------------------------------------");
             System.out.print("Enter your choice: ");
@@ -30,16 +31,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    salesMenu();
+                    adminMenu();
                     break;
                 case 2:
-                    inventoryMenu();
+                    vehicleLocatorMenu();
                     break;
                 case 3:
-                    suppliersMenu();
+                    customerMenu();
                     break;
                 case 4:
-                    customerMenu();
+                    marketingMenu();
                     break;
                 case 5:
                     System.out.println("Exiting the program. Goodbye!");
@@ -52,7 +53,9 @@ public class Main {
 
     }
 
-    private static void salesMenu() {
+    private static void adminMenu() {
+        //admin view can input sql queries through command line
+
         int choice;
         Scanner input = new Scanner(System.in);
 
@@ -60,10 +63,8 @@ public class Main {
         do {
             System.out.println("\nSelect one of the following options: ");
             System.out.println("------------------------------------------");
-            System.out.println("1. Create Sale");
-            System.out.println("2. View Sales Table");
-            System.out.println("3. View Dealers Table");
-            System.out.println("4. Return to Main Menu");
+            System.out.println("1. New Query");
+            System.out.println("2. Return to Main Menu");
             System.out.println("------------------------------------------");
             System.out.print("Enter your choice: ");
 
@@ -71,26 +72,23 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    //insert new sale into sales table
+                    //intake new query to modify the database
                     break;
                 case 2:
-                    //view sales table
-                    break;
-                case 3:
-                    //view dealers table
-                    break;
-                case 4:
                     //end loop
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
             //loop ends and program exits if 6 is input
-        }   while (choice != 4);
+        }   while (choice != 2);
+
 
     }
 
-    private static void inventoryMenu() {
+    private static void vehicleLocatorMenu() {
+        //vehicle locator view can check inventory, search for vehicles
+
         int choice;
         Scanner input = new Scanner(System.in);
 
@@ -98,8 +96,8 @@ public class Main {
         do {
             System.out.println("\nSelect one of the following options: ");
             System.out.println("------------------------------------------");
-            System.out.println("1. Add New Car to Inventory");
-            System.out.println("2. View Inventory Table");
+            System.out.println("1. Add Inventory");
+            System.out.println("2. Search for Vehicle");
             System.out.println("3. Return to Main Menu");
             System.out.println("------------------------------------------");
             System.out.print("Enter your choice: ");
@@ -108,10 +106,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    //insert new vehicle into inventory table
+                    //insert vehicle into inventory
                     break;
                 case 2:
-                    //view inventory table
+                    //search for vehicle
                     break;
                 case 3:
                     //end loop
@@ -122,47 +120,12 @@ public class Main {
             //loop ends and program exits if 6 is input
         }   while (choice != 3);
 
-    }
-
-    private static void suppliersMenu() {
-        int choice;
-        Scanner input = new Scanner(System.in);
-
-        //do while loop to display menu
-        do {
-            System.out.println("\nSelect one of the following options: ");
-            System.out.println("------------------------------------------");
-            System.out.println("1. Add New Supplier");
-            System.out.println("2. View Suppliers Table");
-            System.out.println("3. View Parts Table");
-            System.out.println("4. Return to Main Menu");
-            System.out.println("------------------------------------------");
-            System.out.print("Enter your choice: ");
-
-            choice = input.nextInt();
-
-            switch (choice) {
-                case 1:
-                    //insert new supplier into supplier table
-                    break;
-                case 2:
-                    //view supplier table
-                    break;
-                case 3:
-                    //view parts table
-                    break;
-                case 4:
-                    //end loop
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
-            //loop ends and program exits if 6 is input
-        }   while (choice != 4);
 
     }
 
     private static void customerMenu() {
+        //customer view can view dealers and look at vehicles/products/inventories
+
         int choice;
         Scanner input = new Scanner(System.in);
 
@@ -170,8 +133,8 @@ public class Main {
         do {
             System.out.println("\nSelect one of the following options: ");
             System.out.println("------------------------------------------");
-            System.out.println("1. Add New Customer");
-            System.out.println("2. View Customer Table");
+            System.out.println("1. View Dealers");
+            System.out.println("2. View Vehicles");
             System.out.println("3. Return to Main Menu");
             System.out.println("------------------------------------------");
             System.out.print("Enter your choice: ");
@@ -180,10 +143,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    //insert new customer into customer table
+                    //insert list of dealers table
                     break;
                 case 2:
-                    //View customer table
+                    //view vehicles table with dealer and vehicle details
                     break;
                 case 3:
                     //end loop
@@ -193,6 +156,38 @@ public class Main {
             }
             //loop ends and program exits if 6 is input
         }   while (choice != 3);
+
+    }
+
+    private static void marketingMenu() {
+        //marketing view can view sales reports (Dealers, Sales, Customers)
+
+        int choice;
+        Scanner input = new Scanner(System.in);
+
+        //do while loop to display menu
+        do {
+            System.out.println("\nSelect one of the following options: ");
+            System.out.println("------------------------------------------");
+            System.out.println("1. Add Sales Report");
+            System.out.println("2. Return to Main Menu");
+            System.out.println("------------------------------------------");
+            System.out.print("Enter your choice: ");
+
+            choice = input.nextInt();
+
+            switch (choice) {
+                case 1:
+                    //View Sales Reports for Dealers (list of sales for each dealer)
+                    break;
+                case 2:
+                    //end loop
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+            //loop ends and program exits if 6 is input
+        }   while (choice != 2);
 
     }
 
