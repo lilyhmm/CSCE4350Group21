@@ -1,1 +1,0 @@
-alter table vehicle add constraint fk_model_ID foreign key (model_id) references model(model_id) ON UPDATE CASCADE ON DELETE CASCADE;
