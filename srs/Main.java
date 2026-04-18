@@ -313,36 +313,42 @@ public class Main {
 
         Connection conn = DBConnector.getConnection();
         Statement statement = conn.createStatement();
-        boolean content = statement.execute(query);
 
-        //checks if query is null or not, passes query if not
-        if (content) {
-            ResultSet resultSet = statement.getResultSet();
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int colCount = metaData.getColumnCount();
-            int counter = 1;
-            System.out.println("\n");
+        try {
 
-            while (resultSet.next()) {
-                System.out.println("Row " + colCount + ": ");
-                for (int i = 1; i <= colCount; i++) {
-                    System.out.println(resultSet.getString(i) + " ");
+            boolean content = statement.execute(query);
 
+            //checks if query is null or not, passes query if not
+            if (content) {
+                ResultSet resultSet = statement.getResultSet();
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int colCount = metaData.getColumnCount();
+                int counter = 1;
+                System.out.println("\n");
+
+                while (resultSet.next()) {
+                    for (int i = 1; i <= colCount; i++) {
+                        System.out.println(resultSet.getString(i) + " ");
+
+                    }
+                    System.out.println();
+                    counter++;
                 }
-                System.out.println();
-                counter++;
             }
-        }
 
-        //if null, output status changes
-        else {
-            int rowsAffected = statement.getUpdateCount();
-            if (rowsAffected < 0) {
-                System.out.println("Query Executed. No rows affected.");
+            //if null, output status changes
+            else {
+                int rowsAffected = statement.getUpdateCount();
+                if (rowsAffected < 0) {
+                    System.out.println("Query Executed. No rows affected.");
+                }
+                else if (rowsAffected > 0) {
+                    System.out.println("Query Executed. " + rowsAffected + " rows affected.");
+                }
             }
-            else if (rowsAffected > 0) {
-                System.out.println("Query Executed. " + rowsAffected + " rows affected.");
-            }
+
+        } catch (Exception e) {
+            System.out.println("\nError executing query: " + e.getMessage());
         }
     }
 }
