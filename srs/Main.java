@@ -1,20 +1,18 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         menu();
-        shutdown();
 
     }
 
     //menu display and selection logic
-    private static void menu() {
+    private static void menu() throws SQLException {
 
         int choice;
         Scanner input = new Scanner(System.in);
@@ -53,14 +51,15 @@ public class Main {
                     System.out.println("Invalid choice. Please try again.");
             }
             //loop ends and program exits if 5 is input
-        }   while (choice != 5);
+         }   while (choice != 5);
 
     }
 
-    private static void adminMenu() {
+    private static void adminMenu() throws SQLException {
         //admin view can input sql queries through command line
 
         int choice;
+        String query;
         Scanner input = new Scanner(System.in);
 
         //do while loop to display menu
@@ -73,10 +72,22 @@ public class Main {
             System.out.print("Enter your choice: ");
 
             choice = input.nextInt();
+            input.nextLine();
 
             switch (choice) {
                 case 1:
-                    //intake new query to modify the database
+                    //pass gathered string into function to send it to execute it in mySQL
+                    System.out.println("Enter Query: ");
+                    System.out.println("(Ensure input is on one line)");
+                    query = input.nextLine();
+
+                    if (query == null || query.isEmpty()) {
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                    else {
+                        executeQuery(query);
+                    }
+
                     break;
                 case 2:
                     //end loop
@@ -297,8 +308,41 @@ public class Main {
 
     }
 
-    private static void shutdown() {
+    private static void executeQuery(String query) throws SQLException {
+        //passes query as valid SQL query in database
 
+        Connection conn = DBConnector.getConnection();
+        Statement statement = conn.createStatement();
+        boolean content = statement.execute(query);
+
+        //checks if query is null or not, passes query if not
+        if (content) {
+            ResultSet resultSet = statement.getResultSet();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int colCount = metaData.getColumnCount();
+            int counter = 1;
+            System.out.println("\n");
+
+            while (resultSet.next()) {
+                System.out.println("Row " + colCount + ": ");
+                for (int i = 1; i <= colCount; i++) {
+                    System.out.println(resultSet.getString(i) + " ");
+
+                }
+                System.out.println();
+                counter++;
+            }
+        }
+
+        //if null, output status changes
+        else {
+            int rowsAffected = statement.getUpdateCount();
+            if (rowsAffected < 0) {
+                System.out.println("Query Executed. No rows affected.");
+            }
+            else if (rowsAffected > 0) {
+                System.out.println("Query Executed. " + rowsAffected + " rows affected.");
+            }
+        }
     }
-
 }
