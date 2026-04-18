@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Main {
@@ -194,10 +195,10 @@ public class Main {
 
     private static void customerMenu() {
         //customer view can view dealers and look at vehicles/products/inventories
-
+        Connection conn = DBConnector.getConnection();
         int choice;
         Scanner input = new Scanner(System.in);
-
+        String sql = "";
         //do while loop to display menu
         do {
             System.out.println("\nSelect one of the following options: ");
@@ -213,10 +214,45 @@ public class Main {
             switch (choice) {
                 case 1:
                     //insert list of dealers table
-
+                    try {
+                        Statement stmt = conn.createStatement();
+                        sql = "SELECT dealer_id, dealer_name, address, phone_num FROM Dealer";
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            System.out.println("Dealer ID: " + rs.getInt("dealer_id"));
+                            System.out.println("Dealer Name: " + rs.getString("dealer_name"));
+                            System.out.println("Address: " + rs.getString("address"));
+                            System.out.println("Phone Number: " + rs.getString("phone_num"));
+                            System.out.println("------------------------------------------");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error executing query: " + e.getMessage());
+                    }
                     break;
                 case 2:
                     //view vehicles table with dealer and vehicle details
+                    try {
+                        Statement statement = conn.createStatement();
+                        sql = "SELECT v.VIN, v.transmission, v.color, m.model_name, m.body_type, b.brand_name, d.dealer_name " +
+                                "FROM Vehicle v " +
+                                "JOIN Model m ON v.model_id = m.model_id " +
+                                "JOIN Brand b ON m.brand_id = b.brand_id " +
+                                "JOIN Inventory i ON v.VIN = i.VIN " +
+                                "JOIN Dealer d ON i.dealer_id = d.dealer_id;";
+                        ResultSet rs = statement.executeQuery(sql);
+                        while (rs.next()) {
+                            System.out.println("VIN: " + rs.getString("VIN"));
+                            System.out.println("Transmission: " + rs.getString("transmission"));
+                            System.out.println("Color: " + rs.getString("color"));
+                            System.out.println("Model Name: " + rs.getString("model_name"));
+                            System.out.println("Body Type: " + rs.getString("body_type"));
+                            System.out.println("Brand Name: " + rs.getString("brand_name"));
+                            System.out.println("Dealer Name: " + rs.getString("dealer_name"));
+                            System.out.println("------------------------------------------");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error executing query: " + e.getMessage());
+                    }
                     break;
                 case 3:
                     //end loop
