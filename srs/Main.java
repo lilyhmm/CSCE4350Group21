@@ -281,12 +281,13 @@ public class Main {
 
         int choice;
         Scanner input = new Scanner(System.in);
+        Connection conn = DBConnector.getConnection();
 
         //do while loop to display menu
         do {
             System.out.println("\nSelect one of the following options: ");
             System.out.println("------------------------------------------");
-            System.out.println("1. Add Sales Report");
+            System.out.println("1. View Sales Report");
             System.out.println("2. Return to Main Menu");
             System.out.println("------------------------------------------");
             System.out.print("Enter your choice: ");
@@ -296,6 +297,25 @@ public class Main {
             switch (choice) {
                 case 1:
                     //View Sales Reports for Dealers (list of sales for each dealer)
+                    try {
+                        Statement statement = conn.createStatement();
+                        String sql = "SELECT * FROM sales;";
+                        ResultSet rs = statement.executeQuery(sql);
+                        System.out.println();
+                        System.out.println("------------------------------------------");
+                        while (rs.next()) {
+                            System.out.println("Sale ID: " + rs.getString("sale_id"));
+                            System.out.println("Date: " + rs.getString("date"));
+                            System.out.println("Brand Name: " + rs.getString("brand"));
+                            System.out.println("Model Name: " + rs.getString("model"));
+                            System.out.println("Body Color: " + rs.getString("color"));
+                            System.out.println("Dealer ID: " + rs.getString("dealer_id"));
+                            System.out.println("Customer ID: " + rs.getString("customer_id"));
+                            System.out.println("------------------------------------------");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error executing query: " + e.getMessage());
+                    }
                     break;
                 case 2:
                     //end loop
