@@ -1,0 +1,18 @@
+This file is intended to provide users with a set of sample queries to familiarize themselves with the database.
+
+For Dealers:
+select * from dealers;
+select * from model;
+select * from brand;
+select customer_id, dealer_id, dateofsale, model from Sales where sale_id = 1;
+select income from customer where customer_id = 1;
+
+For Online Customers:
+select phone_num, address from dealer where dealer_id = 1;
+select transmission, color, trim, model_id, vin from vehicle;
+select dealer_id from inventory where VIN = x;
+
+For Marketing Department:
+select * from brand;
+select * from model;
+select phone from customer where income > 45000;
